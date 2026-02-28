@@ -1,27 +1,18 @@
 import "./globals.css";
-import ProductCard from "./components/ProductCard";
 import Header from "./components/Header";
-import { getProducts } from "../lib/products";
-
+import { sections } from "./utils";
+import Section from "./components/Section";
 export default async function Home() {
-  const products = await getProducts();
-  console.log(products);
   return (
-    <>
+    <div className="bg-cream">
       <Header />
-      <div className="flex flex-col min-h-screen items-center justify-center font-sans">
-        <main className="p-8 flex items-center gap-8">
-          {products.map((p: any) => (
-            <ProductCard
-              key={p.id}
-              name={p.name}
-              price={p.price}
-              imageUrl={p.imageUrl}
-              stock={p.stock}
-            />
-          ))}
-        </main>
+      <div className="p-8 flex flex-col justify-between space-y-12 items-start font-sans max-h-screen min-h-96">
+        <h3 className="text-2xl font-medium text-left w-full"> Catalogo </h3>
+        {sections.map(async (s) => {
+          const prods = await s.function();
+          return <Section key={s.name} name={s.name} products={prods} />;
+        })}
       </div>
-    </>
+    </div>
   );
 }
