@@ -2,7 +2,7 @@ import { Product } from "../models";
 import Image from "next/image";
 const ProductCard = ({ name, prices, image, stock, sale }: Product) => {
   return (
-    <div className="w-56 min-h-56 relative rounded-xl shadow-xl hover:drop-shadow-lg transition-shadow hover:bg-foreground hover:scale-105">
+    <div className="w-56 md:w-72 bg-cream min-h-56 relative rounded-xl shadow-xl hover:drop-shadow-lg transition-shadow hover:bg-foreground">
       {sale && (
         <div className="absolute font-semibold shadow shadow-red-500 top-2 right-0 bg-red-500 text-white px-2 py-1 rounded">
           Oferta!

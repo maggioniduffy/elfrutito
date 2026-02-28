@@ -16,5 +16,6 @@ export enum ProductType {
 
 export interface Section {
   name: string;
+  ref: string;
   function: () => Promise<Product[]>;
 }
