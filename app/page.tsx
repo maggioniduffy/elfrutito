@@ -7,8 +7,8 @@ export default async function Home() {
   return (
     <div className="">
       <Header />
-      <div className="mt-5 md:p-8 pb-20 flex flex-col justify-between items-center font-sans min-h-96 w-full md:w-10/12 mx-auto">
-        <h3 className="text-2xl font-medium text-left w-full mb-8 p-4">
+      <div className="md:p-8 pb-20 flex flex-col justify-between items-center font-sans min-h-96 w-full md:w-10/12 mx-auto">
+        <h3 className="text-2xl font-medium text-left w-full p-4">
           {" "}
           Catalogo{" "}
         </h3>

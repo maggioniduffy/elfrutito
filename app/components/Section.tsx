@@ -9,7 +9,7 @@ interface SectionProps {
 
 const Section = ({ name, products, href }: SectionProps) => {
   return (
-    <section className="w-full py-6 px-4" id={href}>
+    <section className="w-full py-6 px-4 " id={href}>
       <h3 className="text-2xl text-card mb-4">{name}</h3>
 
       <div className="relative">

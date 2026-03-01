@@ -12,6 +12,7 @@ const Contact = () => {
       className="w-full py-6 px-4 flex flex-col rounded-2xl items-center"
       id="contacto"
     >
+      <h3 className="text-2xl text-card mb-4">Hace tu pedido!</h3>
       <Image
         src={qr}
         alt="QR Code"

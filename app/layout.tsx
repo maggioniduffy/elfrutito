@@ -8,9 +8,10 @@ const montserratSans = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "El Frutito",
+  title:
+    "El Frutito | Frutos Secos, Frutas Deshidratadas, Semillas y más | Cordoba Capital",
   description:
-    "Frutos Secos, Frutas Deshidratadas, Semillas y más. /n Cordoba Capital",
+    "Catalogo online de Frutos Secos, Frutas Deshidratadas, Semillas y más. /n Cordoba Capital",
 };
 
 export default function RootLayout({
