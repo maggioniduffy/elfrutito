@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { sections } from "../utils";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 const Header = () => {
@@ -21,49 +22,59 @@ const Header = () => {
   return (
     <nav
       className={`
-        sticky top-0 z-50
-        md:px-20 lg:px-40 px-6
-        flex items-center justify-between
-        h-16 w-full
-        transition-all duration-300 rounded-b-2xl
-        ${
-          scrolled
-            ? "bg-background/70 backdrop-blur-md shadow-md"
-            : "bg-primary/10"
-        }
-      `}
+    sticky top-0 z-50
+    px-4 sm:px-8 md:px-16 lg:px-48
+    flex items-center justify-between
+    h-16 w-full gap-10
+    transition-all duration-300 rounded-b-2xl
+    ${
+      scrolled ? "bg-background/70 backdrop-blur-md shadow-md" : "bg-primary/10"
+    }
+  `}
     >
       {/* Left - Desktop Sections */}
-      <div className="hidden md:flex w-1/4 gap-4">
+
+      {/* Center Logo */}
+      <div className="flex items-center gap-2 shrink-0">
+        <Link
+          href={"/"}
+          className={`text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold ${
+            scrolled ? "text-cream" : "text-card"
+          }`}
+        >
+          El Frutito
+        </Link>
+
+        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden">
+          <Image
+            src="/elFrutito.png"
+            alt="El Frutito logo"
+            width={120}
+            height={120}
+            className="object-cover scale-180"
+          />
+        </div>
+      </div>
+
+      <div className="hidden md:flex flex-1 gap-6">
         {sections.map((s) => (
           <Link
             key={s.name}
             href={`#${s.ref}`}
-            className="py-2 text-primary hover:font-bold transition-colors text-center"
+            className="text-primary hover:font-bold transition-colors whitespace-nowrap"
           >
             {s.name}
           </Link>
         ))}
-      </div>
-
-      {/* Center Logo */}
-      <h1
-        className={`text-3xl md:text-4xl font-bold ${scrolled ? "text-cream" : "text-card"}`}
-      >
-        El Frutito
-      </h1>
-
-      {/* Right Desktop */}
-      <div className="hidden md:flex w-1/4 justify-end gap-4">
         <Link
           href="#contacto"
-          className="py-2 text-primary hover:font-bold transition-colors"
+          className="text-primary hover:font-bold transition-colors"
         >
           Contacto
         </Link>
       </div>
 
-      {/* Mobile Menu Button */}
+      {/* Mobile Button */}
       <button onClick={() => setOpen(!open)} className="md:hidden text-primary">
         {open ? <X size={28} /> : <Menu size={28} />}
       </button>
@@ -72,15 +83,15 @@ const Header = () => {
       {open && (
         <div
           className="
-            absolute top-16 left-0 w-full
-            bg-background/90 backdrop-blur-md
-            flex flex-col items-center
-            py-6 gap-4
-            md:hidden
-            shadow-lg
-            rounded-2xl
-            mt-1
-          "
+      absolute top-16 left-0 w-full
+      bg-background/90 backdrop-blur-md
+      flex flex-col items-center
+      py-6 gap-6
+      lg:hidden
+      shadow-lg
+      rounded-b-2xl
+      animate-in fade-in slide-in-from-top-2
+    "
         >
           {sections.map((s) => (
             <Link

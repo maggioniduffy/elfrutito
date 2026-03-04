@@ -94,7 +94,7 @@ const ProductCard = ({
             {description && (
               <button
                 onClick={() => setOpen(true)}
-                className="bg-card text-cream rounded-full hover:opacity-60 hover:cursor-pointer transition-all duration-300"
+                className="bg-card/80 text-cream rounded-full bg-opacity-80 hover:opacity-60 hover:cursor-pointer transition-all duration-300"
               >
                 <DescriptionIcon className="w-10 h-10 mx-auto" />
               </button>

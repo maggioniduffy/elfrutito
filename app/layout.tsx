@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     siteName: "El Frutito",
     images: [
       {
-        url: "/elfrutito.png",
+        url: "/elFrutito.png",
         width: 1200,
         height: 630,
         alt: "El Frutito - Frutos secos",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "El Frutito",
     description: "Frutos secos premium en Córdoba",
-    images: ["/elfrutito.png"],
+    images: ["/elFutito.png"],
   },
 };
 
