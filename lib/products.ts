@@ -28,6 +28,7 @@ async function getProducts(response: any): Promise<Product[]> {
         null,
       prices,
       sale,
+      description: props.Descripcion?.rich_text[0]?.plain_text ?? "",
     };
   });
 
@@ -67,6 +68,48 @@ export async function getFehydratedFruits() {
         {
           property: "Tipo",
           select: { equals: ProductType.DehydratedFruit },
+        },
+      ],
+    },
+  });
+
+  const products = await getProducts(response);
+  return products;
+}
+
+export async function getGranola() {
+  const response = await notion.databases.query({
+    database_id: process.env.NOTION_DATABASE_ID!,
+    filter: {
+      and: [
+        {
+          property: "Visible",
+          checkbox: { equals: true },
+        },
+        {
+          property: "Tipo",
+          select: { equals: ProductType.Granola },
+        },
+      ],
+    },
+  });
+
+  const products = await getProducts(response);
+  return products;
+}
+
+export async function getMix() {
+  const response = await notion.databases.query({
+    database_id: process.env.NOTION_DATABASE_ID!,
+    filter: {
+      and: [
+        {
+          property: "Visible",
+          checkbox: { equals: true },
+        },
+        {
+          property: "Tipo",
+          select: { equals: ProductType.Mix },
         },
       ],
     },

@@ -25,6 +25,7 @@ const Section = ({ name, products, href }: SectionProps) => {
                 image={p.image}
                 stock={p.stock}
                 sale={p.sale}
+                description={p.description}
               />
             </div>
           ))}

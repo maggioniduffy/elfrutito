@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import { sections } from "./utils";
 import Section from "./components/Section";
 import Contact from "./components/Contact";
+
 export default async function Home() {
   return (
     <div className="">
@@ -15,6 +16,7 @@ export default async function Home() {
         <div className="flex flex-col gap-5 max-w-full">
           {sections.map(async (s) => {
             const prods = await s.function();
+            console.log(prods);
             return (
               <Section
                 key={s.name}

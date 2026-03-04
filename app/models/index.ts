@@ -7,11 +7,14 @@ export interface Product {
   image: string;
   stock: number;
   sale: boolean;
+  description: string;
 }
 
 export enum ProductType {
   DriedFruit = "Fruto Seco",
   DehydratedFruit = "Fruta Deshidratada",
+  Granola = "Granola",
+  Mix = "Mix",
 }
 
 export interface Section {

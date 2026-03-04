@@ -1,4 +1,9 @@
-import { getDriedFruits, getFehydratedFruits } from "@/lib/products";
+import {
+  getDriedFruits,
+  getFehydratedFruits,
+  getGranola,
+  getMix,
+} from "@/lib/products";
 import { Section } from "../models";
 
 export const sections: Section[] = [
@@ -11,5 +16,15 @@ export const sections: Section[] = [
     name: "Frutas Deshidratadas",
     ref: "frutas-deshidratadas",
     function: getFehydratedFruits,
+  },
+  {
+    name: "Granola",
+    ref: "granola",
+    function: getGranola,
+  },
+  {
+    name: "Mix",
+    ref: "mix",
+    function: getMix,
   },
 ];

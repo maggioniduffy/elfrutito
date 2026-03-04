@@ -39,7 +39,7 @@ const Header = () => {
           <Link
             key={s.name}
             href={`#${s.ref}`}
-            className="py-2 text-primary hover:font-bold transition-colors"
+            className="py-2 text-primary hover:font-bold transition-colors text-center"
           >
             {s.name}
           </Link>
@@ -78,6 +78,8 @@ const Header = () => {
             py-6 gap-4
             md:hidden
             shadow-lg
+            rounded-2xl
+            mt-1
           "
         >
           {sections.map((s) => (
