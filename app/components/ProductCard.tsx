@@ -129,13 +129,6 @@ const ProductCard = ({
             <h2 className="text-xl font-bold mb-4">{name}</h2>
 
             <p className="text-sm text-card leading-relaxed">{description}</p>
-
-            <button
-              onClick={() => setOpen(false)}
-              className="mt-6 w-full bg-foreground text-cream py-2 rounded-lg hover:opacity-90 transition"
-            >
-              Cerrar
-            </button>
           </div>
         </div>
       )}
