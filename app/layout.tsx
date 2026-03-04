@@ -8,10 +8,33 @@ const montserratSans = Montserrat({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://elfrutito.vercel.app"),
   title:
     "El Frutito | Frutos Secos, Frutas Deshidratadas, Semillas y más | Cordoba Capital",
   description:
     "Catalogo online de Frutos Secos, Frutas Deshidratadas, Semillas y más. /n Cordoba Capital",
+  openGraph: {
+    title: "El Frutito | Frutos secos en Córdoba",
+    description: "Frutos secos premium al mejor precio. Envíos en Córdoba.",
+    url: "https://elfrutito.vercel.app",
+    siteName: "El Frutito",
+    images: [
+      {
+        url: "/elfrutito.png",
+        width: 1200,
+        height: 630,
+        alt: "El Frutito - Frutos secos",
+      },
+    ],
+    locale: "es_AR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "El Frutito",
+    description: "Frutos secos premium en Córdoba",
+    images: ["/elfrutito.png"],
+  },
 };
 
 export default function RootLayout({
