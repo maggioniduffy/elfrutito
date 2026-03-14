@@ -48,7 +48,7 @@ const Header = () => {
         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden">
           <Image
             src="/elFrutito.png"
-            alt="El Frutito logo"
+            alt="El Frutito Logo"
             width={120}
             height={120}
             className="object-cover scale-180"
