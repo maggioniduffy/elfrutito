@@ -29,7 +29,7 @@ export default async function Home() {
             );
           })}
         </div>
-
+        {/* <img src="/api/catalog" /> */}
         <Contact />
       </div>
     </div>
