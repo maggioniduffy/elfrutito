@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import { useCart } from "@/app/context/CartContext";
 
 const PHONE = "5492995509968";
@@ -100,7 +99,7 @@ export default function CartDrawer({
                 key={`${item.id}__${item.selectedWeight}`}
                 className="flex gap-3 bg-white/60 rounded-xl p-3 shadow-sm"
               >
-                <Image
+                <img
                   src={item.image || "/elFrutito.png"}
                   alt={item.name}
                   width={64}
