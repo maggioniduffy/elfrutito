@@ -51,7 +51,7 @@ const Header = () => {
             alt="El Frutito Logo"
             width={120}
             height={120}
-            className="object-cover scale-180"
+            className="object-cover scale-200"
           />
         </div>
       </div>

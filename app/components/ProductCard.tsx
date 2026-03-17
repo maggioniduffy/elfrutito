@@ -120,7 +120,7 @@ const ProductCard = ({
           </div>
         )}
 
-        <Image
+        <img
           src={image || "/elFrutito.png"}
           alt={name}
           width={300}
