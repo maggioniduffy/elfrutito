@@ -3,29 +3,27 @@
 import { useEffect, useState } from "react";
 import { Product } from "../models";
 import Image from "next/image";
+import { useCart } from "../context/CartContext";
 
-const DescriptionIcon = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <circle cx="12" cy="12" r="10" />
-      <line x1="12" y1="16" x2="12" y2="12" />
-      <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  );
-};
-
-// export default DescriptionIcon;
+const DescriptionIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="16" x2="12" y2="12" />
+    <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
+  </svg>
+);
 
 const ProductCard = ({
+  id,
   name,
   prices,
   image,
@@ -33,10 +31,22 @@ const ProductCard = ({
   sale,
   description,
 }: Product) => {
+  const { addItem } = useCart();
+
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  // Handle animation mount/unmount
+  // Weight picker modal state
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerVisible, setPickerVisible] = useState(false);
+  const [selectedWeight, setSelectedWeight] = useState<string>(
+    prices[0]?.[0] ?? "",
+  );
+
+  // Added feedback
+  const [added, setAdded] = useState(false);
+
+  // Description modal animation
   useEffect(() => {
     if (open) {
       setTimeout(() => setVisible(true), 10);
@@ -47,22 +57,65 @@ const ProductCard = ({
     }
   }, [open]);
 
+  // Picker animation
+  useEffect(() => {
+    if (pickerOpen) {
+      setTimeout(() => setPickerVisible(true), 10);
+    } else {
+      setPickerVisible(false);
+    }
+  }, [pickerOpen]);
+
   // ESC close
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        setPickerOpen(false);
+      }
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  console.log(description);
+  const handleAdd = () => {
+    // If only one price option, add directly
+    if (prices.length === 1) {
+      addItem(
+        { id, name, prices, image, stock, sale, description },
+        prices[0][0],
+        prices[0][1],
+      );
+      triggerAddedFeedback();
+    } else {
+      setSelectedWeight(prices[0][0]);
+      setPickerOpen(true);
+    }
+  };
+
+  const confirmAdd = () => {
+    const priceEntry = prices.find(([w]: any) => w === selectedWeight);
+    if (!priceEntry) return;
+    addItem(
+      { id, name, prices, image, stock, sale, description },
+      selectedWeight,
+      priceEntry[1],
+    );
+    setPickerOpen(false);
+    triggerAddedFeedback();
+  };
+
+  const triggerAddedFeedback = () => {
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
   return (
     <>
       {/* CARD */}
-      <div className="w-56 md:w-72 bg-cream min-h-56 relative rounded-xl shadow-xl hover:shadow-2xl transition-all hover:bg-foreground">
+      <div className="w-56 md:w-72 bg-cream min-h-56 relative rounded-xl shadow-xl hover:shadow-2xl transition-all hover:bg-foreground flex flex-col">
         {sale && (
-          <div className="absolute font-semibold shadow shadow-red-500 top-2 right-0 bg-red-500 text-white px-2 py-1 rounded">
+          <div className="absolute font-semibold shadow shadow-red-500 top-2 right-0 bg-red-500 text-white px-2 py-1 rounded z-10">
             Oferta!
           </div>
         )}
@@ -75,7 +128,7 @@ const ProductCard = ({
           className="w-full h-48 object-cover rounded-t-xl bg-card"
         />
 
-        <div className="p-4">
+        <div className="p-4 flex flex-col flex-1">
           <h3 className="text-lg font-semibold">{name}</h3>
 
           <div className="my-2 flex flex-wrap gap-2 bg-cream p-2 rounded">
@@ -86,7 +139,7 @@ const ProductCard = ({
             ))}
           </div>
 
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mb-3">
             <p className="text-sm w-1/2">
               En stock <b className="text-card font-semibold">{stock} kg</b>
             </p>
@@ -100,10 +153,22 @@ const ProductCard = ({
               </button>
             )}
           </div>
+
+          {/* Add to cart button */}
+          <button
+            onClick={handleAdd}
+            className={`mt-auto w-full py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
+              added
+                ? "bg-green-500 text-white scale-95"
+                : "bg-primary text-cream hover:opacity-80 hover:scale-[1.02]"
+            }`}
+          >
+            {added ? "✓ Agregado!" : "Agregar al carrito"}
+          </button>
         </div>
       </div>
 
-      {/* MODAL */}
+      {/* DESCRIPTION MODAL */}
       {open && (
         <div
           className={`fixed inset-0 z-50 flex items-center justify-center px-4 transition-all duration-300 ${
@@ -125,10 +190,55 @@ const ProductCard = ({
             >
               ✕
             </button>
-
             <h2 className="text-xl font-bold mb-4">{name}</h2>
-
             <p className="text-sm text-card leading-relaxed">{description}</p>
+          </div>
+        </div>
+      )}
+
+      {/* WEIGHT PICKER MODAL */}
+      {pickerOpen && (
+        <div
+          className={`fixed inset-0 z-50 flex items-center justify-center px-4 transition-all duration-300 ${
+            pickerVisible ? "bg-black/50 backdrop-blur-sm" : "bg-black/0"
+          }`}
+          onClick={() => setPickerOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`bg-cream max-w-xs w-full rounded-2xl p-6 shadow-2xl transform transition-all duration-300 ${
+              pickerVisible
+                ? "opacity-100 scale-100 translate-y-0"
+                : "opacity-0 scale-95 translate-y-4"
+            }`}
+          >
+            <h2 className="text-lg font-bold mb-1">{name}</h2>
+            <p className="text-sm text-card/60 mb-4">
+              Elegí el tamaño / cantidad
+            </p>
+
+            <div className="flex flex-wrap gap-2 mb-5">
+              {prices.map(([weight, price]: any) => (
+                <button
+                  key={weight}
+                  onClick={() => setSelectedWeight(weight)}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold border-2 transition-all ${
+                    selectedWeight === weight
+                      ? "border-primary bg-primary text-cream"
+                      : "border-card/20 bg-white text-card hover:border-primary/50"
+                  }`}
+                >
+                  {weight} — ${price}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={confirmAdd}
+              className="w-full bg-primary text-cream font-semibold py-3 rounded-xl hover:opacity-80 transition-all"
+            >
+              Agregar al carrito
+            </button>
           </div>
         </div>
       )}
