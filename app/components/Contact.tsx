@@ -14,7 +14,7 @@ const Contact = () => {
         href={link}
         className="mx-auto bg-primary text-cream font-medium hover:scale-105 p-5 rounded-xl shadow hover:font-bold transition-colors text-center w-fit"
       >
-        Hace tu consulta por Whatsapp!
+        Hacenos tu consulta por Whatsapp!
       </Link>
     </div>
   );
