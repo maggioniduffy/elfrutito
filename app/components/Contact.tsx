@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const link =
-  "https://wa.me/5492995509968?text=Hola%20El%20Frutito!%2C%20Quiero%consultar%sobre";
+  "https://wa.me/5492995509968?text=Hola%20El%20Frutito!%2C%20Quiero%consultar%sobre...";
 
 const Contact = () => {
   return (
