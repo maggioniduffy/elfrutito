@@ -37,9 +37,9 @@ const Welcome = () => {
       >
         <div className="rounded-2xl px-6 py-4 bg-cream shadow-md">
           <p className="text-background text-center text-lg">
-            Bienvenido a <b>El Frutito</b>, emprendimiento de frutos secos en
-            Nueva Córdoba 🌰 Mirá nuestros productos y luego hacé tu pedido por
-            WhatsApp, usando el carrito de compras.
+            Bienvenido a <b className="text-card">El Frutito</b>, emprendimiento
+            de frutos secos en Nueva Córdoba 🌰 Mirá nuestros productos y luego
+            hacé tu pedido por WhatsApp, usando el carrito de compras.
           </p>
         </div>
       </div>

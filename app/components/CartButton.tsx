@@ -8,7 +8,7 @@ export default function CartButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="fixed bottom-10 right-10 flex items-center gap-2 bg-primary text-cream font-semibold px-4 py-2 rounded-xl hover:scale-105 transition-transform shadow"
+      className="fixed bottom-10 right-10 flex items-center gap-2 bg-primary text-cream font-semibold px-4 py-2 rounded-xl hover:scale-105 transition-transform shadow-xl"
       aria-label="Ver carrito"
     >
       🛒
