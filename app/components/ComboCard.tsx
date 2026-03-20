@@ -29,7 +29,6 @@ const ComboCard = ({
   sale,
   description,
   type,
-  comboPrice = 0,
 }: Product) => {
   const { addItem } = useCart();
 
@@ -90,10 +89,9 @@ const ComboCard = ({
         sale,
         description,
         type,
-        comboPrice,
       },
       `${quantity} unidad${quantity > 1 ? "es" : ""}`,
-      comboPrice * quantity,
+      prices[2][1] * quantity,
     );
     setPickerOpen(false);
     triggerAddedFeedback();
@@ -125,7 +123,7 @@ const ComboCard = ({
 
           <div className="my-2 flex flex-wrap gap-2 bg-cream p-2 rounded">
             <p className="text-sm bg-ring px-2 py-1 rounded">
-              <b className="text-cream font-semibold">${comboPrice}</b>
+              <b className="text-cream font-semibold">${prices[2][1]}</b>
             </p>
           </div>
 
@@ -223,7 +221,7 @@ const ComboCard = ({
             <p className="text-center text-sm text-card/60 mb-5">
               Total:{" "}
               <b className="text-card font-semibold">
-                ${comboPrice * quantity}
+                ${prices[2][1] * quantity}
               </b>
             </p>
 

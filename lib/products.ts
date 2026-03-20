@@ -39,7 +39,6 @@ async function getProducts(
       sale,
       description: props.Descripcion?.rich_text[0]?.plain_text ?? "",
       type,
-      comboPrice: isCombo ? (props["Precio kg compra"]?.number ?? 0) : null,
     };
   });
 
