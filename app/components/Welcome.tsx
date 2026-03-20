@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 
 const Welcome = () => {
   const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setOpen(false), 5000);
+  }, []);
 
   return (
     <div className="w-full flex flex-col items-center my-2">

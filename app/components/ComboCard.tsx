@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Product } from "../models";
-import Image from "next/image";
 import { useCart } from "../context/CartContext";
-import { ProductType } from "../models";
 
 const DescriptionIcon = ({ className }: { className?: string }) => (
   <svg
@@ -23,32 +21,26 @@ const DescriptionIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const ProductCard = ({
+const ComboCard = ({
   id,
   name,
   prices,
   image,
-  stock,
   sale,
   description,
   type,
+  comboPrice = 0,
 }: Product) => {
   const { addItem } = useCart();
 
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  // Weight picker modal state
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerVisible, setPickerVisible] = useState(false);
-  const [selectedWeight, setSelectedWeight] = useState<string>(
-    prices[0]?.[0] ?? "",
-  );
+  const [quantity, setQuantity] = useState(1);
 
-  // Added feedback
   const [added, setAdded] = useState(false);
-
-  const showStock = type !== ProductType.Mix && type !== ProductType.Combo;
 
   // Description modal animation
   useEffect(() => {
@@ -83,27 +75,25 @@ const ProductCard = ({
   }, []);
 
   const handleAdd = () => {
-    // If only one price option, add directly
-    if (prices.length === 1) {
-      addItem(
-        { id, name, prices, image, stock, sale, description, type },
-        prices[0][0],
-        prices[0][1],
-      );
-      triggerAddedFeedback();
-    } else {
-      setSelectedWeight(prices[0][0]);
-      setPickerOpen(true);
-    }
+    setQuantity(1);
+    setPickerOpen(true);
   };
 
   const confirmAdd = () => {
-    const priceEntry = prices.find(([w]: any) => w === selectedWeight);
-    if (!priceEntry) return;
     addItem(
-      { id, name, prices, image, stock, sale, description, type },
-      selectedWeight,
-      priceEntry[1],
+      {
+        id,
+        name,
+        prices,
+        image,
+        stock: 0,
+        sale,
+        description,
+        type,
+        comboPrice,
+      },
+      `${quantity} unidad${quantity > 1 ? "es" : ""}`,
+      comboPrice * quantity,
     );
     setPickerOpen(false);
     triggerAddedFeedback();
@@ -127,8 +117,6 @@ const ProductCard = ({
         <img
           src={image || "/elFrutito.png"}
           alt={name}
-          width={300}
-          height={300}
           className="w-full h-48 object-cover rounded-t-xl bg-card"
         />
 
@@ -136,20 +124,12 @@ const ProductCard = ({
           <h3 className="text-lg font-semibold">{name}</h3>
 
           <div className="my-2 flex flex-wrap gap-2 bg-cream p-2 rounded">
-            {prices.map(([weight, price]: any) => (
-              <p key={weight} className="text-sm bg-ring px-2 py-1 rounded">
-                {weight}: <b className="text-cream font-semibold">${price}</b>
-              </p>
-            ))}
+            <p className="text-sm bg-ring px-2 py-1 rounded">
+              <b className="text-cream font-semibold">${comboPrice}</b>
+            </p>
           </div>
 
-          <div className="flex justify-between items-center mb-3">
-            {showStock && (
-              <p className="text-sm w-1/2">
-                En stock <b className="text-card font-semibold">{stock} kg</b>
-              </p>
-            )}
-
+          <div className="flex justify-end items-center mb-3">
             {description && (
               <button
                 onClick={() => setOpen(true)}
@@ -202,7 +182,7 @@ const ProductCard = ({
         </div>
       )}
 
-      {/* WEIGHT PICKER MODAL */}
+      {/* QUANTITY PICKER MODAL */}
       {pickerOpen && (
         <div
           className={`fixed inset-0 z-50 flex items-center justify-center px-4 transition-all duration-300 ${
@@ -219,25 +199,33 @@ const ProductCard = ({
             }`}
           >
             <h2 className="text-lg font-bold mb-1">{name}</h2>
-            <p className="text-sm text-card/60 mb-4">
-              Elegí el tamaño / cantidad
-            </p>
+            <p className="text-sm text-card/60 mb-4">¿Cuántas unidades?</p>
 
-            <div className="flex flex-wrap gap-2 mb-5">
-              {prices.map(([weight, price]: any) => (
-                <button
-                  key={weight}
-                  onClick={() => setSelectedWeight(weight)}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold border-2 transition-all ${
-                    selectedWeight === weight
-                      ? "border-primary bg-primary text-cream"
-                      : "border-card/20 bg-white text-card hover:border-primary/50"
-                  }`}
-                >
-                  {weight} — ${price}
-                </button>
-              ))}
+            {/* Quantity selector */}
+            <div className="flex items-center justify-center gap-6 mb-5">
+              <button
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                className="w-10 h-10 rounded-full border-2 border-card/20 text-card text-xl font-bold hover:border-primary transition-all"
+              >
+                −
+              </button>
+              <span className="text-2xl font-bold w-8 text-center">
+                {quantity}
+              </span>
+              <button
+                onClick={() => setQuantity((q) => q + 1)}
+                className="w-10 h-10 rounded-full border-2 border-card/20 text-card text-xl font-bold hover:border-primary transition-all"
+              >
+                +
+              </button>
             </div>
+
+            <p className="text-center text-sm text-card/60 mb-5">
+              Total:{" "}
+              <b className="text-card font-semibold">
+                ${comboPrice * quantity}
+              </b>
+            </p>
 
             <button
               onClick={confirmAdd}
@@ -252,4 +240,4 @@ const ProductCard = ({
   );
 };
 
-export default ProductCard;
+export default ComboCard;

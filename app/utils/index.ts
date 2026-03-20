@@ -3,6 +3,7 @@ import {
   getFehydratedFruits,
   getGranola,
   getMix,
+  getCombo,
 } from "@/lib/products";
 import { Section } from "../models";
 
@@ -26,5 +27,10 @@ export const sections: Section[] = [
     name: "Mix",
     ref: "mix",
     function: getMix,
+  },
+  {
+    name: "Combo",
+    ref: "combo",
+    function: getCombo,
   },
 ];

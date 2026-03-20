@@ -2,13 +2,16 @@ import { notion } from "@/lib/notion";
 import { Prices, Product } from "@/app/models";
 import { ProductType } from "@/app/models";
 
-function proxyImage(url: string | null): string | null {
-  if (!url) return null;
-  // Route through our proxy so Notion's expiring signed URLs are fetched server-side
-  return `/api/image?url=${encodeURIComponent(url)}`;
+function getLocalImage(imageName: string | null): string {
+  if (!imageName) return "/elFrutito.png";
+  return `/frutos/${imageName.trim()}.jpeg`;
 }
 
-async function getProducts(response: any): Promise<Product[]> {
+async function getProducts(
+  response: any,
+  type: ProductType,
+  isCombo = false,
+): Promise<Product[]> {
   const products: Product[] = response.results.map((page: any) => {
     const props = page.properties;
     const sale = props.Oferta?.checkbox;
@@ -22,20 +25,21 @@ async function getProducts(response: any): Promise<Product[]> {
       })
       .map(([key, value]: any) => [key, value.formula.number]);
 
-    const rawImage =
-      props.Image?.url ||
-      props.Image?.files?.[0]?.file?.url ||
-      props.Image?.files?.[0]?.external?.url ||
+    const imageName =
+      props.Image?.rich_text?.[0]?.plain_text ||
+      props.Image?.title?.[0]?.plain_text ||
       null;
 
     return {
       id: page.id,
       name: props.Nombre.title[0]?.plain_text ?? "",
       stock: props.Stock?.number ?? 0,
-      image: proxyImage(rawImage),
+      image: getLocalImage(imageName),
       prices,
       sale,
       description: props.Descripcion?.rich_text[0]?.plain_text ?? "",
+      type,
+      comboPrice: isCombo ? (props["Precio kg compra"]?.number ?? 0) : null,
     };
   });
 
@@ -47,20 +51,12 @@ export async function getDriedFruits() {
     database_id: process.env.NOTION_DATABASE_ID!,
     filter: {
       and: [
-        {
-          property: "Visible",
-          checkbox: { equals: true },
-        },
-        {
-          property: "Tipo",
-          select: { equals: ProductType.DriedFruit },
-        },
+        { property: "Visible", checkbox: { equals: true } },
+        { property: "Tipo", select: { equals: ProductType.DriedFruit } },
       ],
     },
   });
-
-  const products = await getProducts(response);
-  return products;
+  return getProducts(response, ProductType.DriedFruit);
 }
 
 export async function getFehydratedFruits() {
@@ -68,20 +64,12 @@ export async function getFehydratedFruits() {
     database_id: process.env.NOTION_DATABASE_ID!,
     filter: {
       and: [
-        {
-          property: "Visible",
-          checkbox: { equals: true },
-        },
-        {
-          property: "Tipo",
-          select: { equals: ProductType.DehydratedFruit },
-        },
+        { property: "Visible", checkbox: { equals: true } },
+        { property: "Tipo", select: { equals: ProductType.DehydratedFruit } },
       ],
     },
   });
-
-  const products = await getProducts(response);
-  return products;
+  return getProducts(response, ProductType.DehydratedFruit);
 }
 
 export async function getGranola() {
@@ -89,20 +77,12 @@ export async function getGranola() {
     database_id: process.env.NOTION_DATABASE_ID!,
     filter: {
       and: [
-        {
-          property: "Visible",
-          checkbox: { equals: true },
-        },
-        {
-          property: "Tipo",
-          select: { equals: ProductType.Granola },
-        },
+        { property: "Visible", checkbox: { equals: true } },
+        { property: "Tipo", select: { equals: ProductType.Granola } },
       ],
     },
   });
-
-  const products = await getProducts(response);
-  return products;
+  return getProducts(response, ProductType.Granola);
 }
 
 export async function getMix() {
@@ -110,18 +90,23 @@ export async function getMix() {
     database_id: process.env.NOTION_DATABASE_ID!,
     filter: {
       and: [
-        {
-          property: "Visible",
-          checkbox: { equals: true },
-        },
-        {
-          property: "Tipo",
-          select: { equals: ProductType.Mix },
-        },
+        { property: "Visible", checkbox: { equals: true } },
+        { property: "Tipo", select: { equals: ProductType.Mix } },
       ],
     },
   });
+  return getProducts(response, ProductType.Mix);
+}
 
-  const products = await getProducts(response);
-  return products;
+export async function getCombo() {
+  const response = await notion.databases.query({
+    database_id: process.env.NOTION_DATABASE_ID!,
+    filter: {
+      and: [
+        { property: "Visible", checkbox: { equals: true } },
+        { property: "Tipo", select: { equals: ProductType.Combo } },
+      ],
+    },
+  });
+  return getProducts(response, ProductType.Combo, true);
 }

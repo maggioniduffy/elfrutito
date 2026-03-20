@@ -8,6 +8,9 @@ export interface Product {
   stock: number;
   sale: boolean;
   description: string;
+  type: ProductType;
+  isCombo?: boolean;
+  comboPrice?: number;
 }
 
 export enum ProductType {
@@ -15,6 +18,7 @@ export enum ProductType {
   DehydratedFruit = "Fruta Deshidratada",
   Granola = "Granola",
   Mix = "Mix",
+  Combo = "Combo",
 }
 
 export interface Section {

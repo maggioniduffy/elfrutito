@@ -1,4 +1,5 @@
 import { Product } from "../models";
+import ComboCard from "./ComboCard";
 import ProductCard from "./ProductCard";
 
 interface SectionProps {
@@ -18,15 +19,30 @@ const Section = ({ name, products, href }: SectionProps) => {
         <div className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory m-4">
           {products?.map((p: any) => (
             <div key={p.id} className="flex-shrink-0 snap-start my-5">
-              <ProductCard
-                id={p.id}
-                name={p.name}
-                prices={p.prices}
-                image={p.image}
-                stock={p.stock}
-                sale={p.sale}
-                description={p.description}
-              />
+              {name == "Combo" ? (
+                <ComboCard
+                  id={p.id}
+                  name={p.name}
+                  prices={p.prices}
+                  image={p.image}
+                  stock={p.stock}
+                  sale={p.sale}
+                  description={p.description}
+                  type={p.type}
+                  comboPrice={p.comboPrice}
+                />
+              ) : (
+                <ProductCard
+                  id={p.id}
+                  name={p.name}
+                  prices={p.prices}
+                  image={p.image}
+                  stock={p.stock}
+                  sale={p.sale}
+                  description={p.description}
+                  type={p.type}
+                />
+              )}
             </div>
           ))}
         </div>
